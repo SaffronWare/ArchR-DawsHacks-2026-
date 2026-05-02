@@ -7,6 +7,7 @@ from copy import deepcopy
 from draw_functions import draw_rod
 
 
+# Convert strain to RGB color based on stress
 def strain_to_color(strain, scale=0.001):
 
 
@@ -28,6 +29,7 @@ CONNECTION_TYPES = {
     "ROAD":1
 }
 
+# Connection class representing rods between particles
 class Connection:
     def __init__(self, p1 : Particle, p2 : Particle):
         self.p1 = p1 
@@ -41,6 +43,7 @@ class Connection:
         self.reinforced = False
         
     
+    # Update connection physics and handle breakage
     def update(self):
         try:
             curr_length = (self.p2.pos - self.p1.pos).length()
@@ -77,6 +80,7 @@ class Connection:
             return [False]
 
 
+    # Draw the connection
     def draw(self, surface):
 
         draw_rod(surface, world_to_screen(self.p1.pos), world_to_screen(self.p2.pos), strain_to_color(self.strain))

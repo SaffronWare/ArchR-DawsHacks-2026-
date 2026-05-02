@@ -21,16 +21,19 @@ pygame.display.set_caption('ArchR')
 
 BLACK = (50, 50, 50)
 
+# Class to calculate and render FPS
 class FPS:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Verdana", 20, bold=True)
         self.color = (200, 220, 240)
  
+    # Render FPS to display
     def render(self, display):
         self.text = self.font.render(f"FPS: {round(self.clock.get_fps())}", True, self.color)
         display.blit(self.text, (20, 20))
 
+# Reinforce the bridge at specified indices
 def reinforce_bridge(indeces, above=False):
     for connection_index in indeces:
                 connection = result_bridge.connections[connection_index]
@@ -50,7 +53,7 @@ def reinforce_bridge(indeces, above=False):
 
                     count = 0
                     for neighbor in x_neighbours:
-                        if abs(neighbor.pos.y - new_point.pos.y) < 0.5 and 10 > (neighbor.pos - new_point.pos).length() > 0.1:
+                        if abs(neighbor.pos.y - new_point.pos.y) < 5 and 20 > (neighbor.pos - new_point.pos).length() > 0.1:
                             c = Connection(new_point, neighbor)
                             c.reinforced = True
                             result_bridge.connections.append(c)

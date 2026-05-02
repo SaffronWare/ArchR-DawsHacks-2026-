@@ -16,6 +16,7 @@ center = (window_width // 2, window_height // 2)
 radius = 30
 
 
+# Draw the background and grid
 def draw_background(surface):
 
     surface.fill((15, 20, 25))
@@ -32,6 +33,7 @@ def draw_background(surface):
 
 
 
+# Draw a glow effect
 def draw_glow(screen, center, radius, color):
     x, y = center
 
@@ -59,6 +61,7 @@ def draw_glow(screen, center, radius, color):
 
     screen.blit(surf, (x - cx, y - cy))
 
+# Draw a polished rod with an outline and rounded caps
 def draw_rod(surface, start_pos, end_pos, color, width=6):
     """Draw a polished rod with an outline and rounded caps."""
     x1, y1 = start_pos

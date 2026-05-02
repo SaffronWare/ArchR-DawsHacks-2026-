@@ -2,6 +2,7 @@ from pygame import Vector2
 import pygame as pg
 from constants import *
 from draw_functions import *
+# Class representing a physical particle
 class Particle:
     def __init__(self, pos=Vector2()):
         self.pos = pos.copy()
@@ -15,6 +16,7 @@ class Particle:
         self.anchored = False # for now i might add more later
         self.should_draw = True
 
+    # Update the particle's physics state
     def update(self):
         if (not self.anchored):
             self.velocity.y += gravity * dt 
@@ -26,6 +28,7 @@ class Particle:
                     self.pos.y = self.radius - world_y_span
                     self.anchored = True
 
+    # Draw the particle
     def draw(self, surface: pg.Surface):
         # ok wait first imma draw the actual node
         if self.should_draw:

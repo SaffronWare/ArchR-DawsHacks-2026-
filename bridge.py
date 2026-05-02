@@ -3,11 +3,13 @@ from particle import *
 from connection import *
 import pygame as pg
 
+# Bridge class to handle simulation
 class Bridge:
     def __init__(self):
         self.road = []
         self.particles = []
         self.connections = []
+    # Update physics simulation for bridge
     def update(self):
         has_broken=False
         new_particles = []
@@ -62,6 +64,7 @@ class Bridge:
         return has_broken, broken_connections, dropped_connection_indices
            
 
+    # Draw the bridge on surface
     def draw(self, surface : pg.Surface):
         for particle in self.particles:
             particle.draw(surface)

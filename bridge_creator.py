@@ -5,18 +5,27 @@ from connection import Connection
 from bridge import Bridge
 from copy import deepcopy
 
+# Class to create and initialize bridge
 class BridgeCreator:
+    # Generate a bridge with supports based on nodes
     @staticmethod
     def generate_generic( path):
     
     
         particles = deepcopy(path)
         left_support = deepcopy(particles[0])
-        left_support.pos.y -= 3
+        left_support.pos.y -= 5
+        left_support.pos.x += 1
+        
+        left_support2 = deepcopy(particles[0])
+        left_support2.pos.y -= 5
         
         right_support = deepcopy(particles[-1])
-        right_support.pos.y -= 3
-
+        right_support.pos.y -= 5
+        right_support.pos.x -= 1
+        
+        right_support2 = deepcopy(particles[-1])
+        right_support2.pos.y -= 5
     
         
         connections = []
@@ -29,9 +38,16 @@ class BridgeCreator:
 
         connections.append(Connection(left_support, particles[1]))
         connections.append(Connection(right_support, particles[-2]))
+        connections.append(Connection(left_support, particles[-2]))
+        connections.append(Connection(right_support, particles[1]))
+        
+        connections.append(Connection(left_support2, particles[0]))
+        connections.append(Connection(right_support2, particles[-1]))
 
         particles.append(left_support)
         particles.append(right_support)
+        particles.append(left_support2)
+        particles.append(right_support2)
         
         for i, p in enumerate(particles):
             p.original_index = i
@@ -53,6 +69,7 @@ class BridgeCreator:
         self.roads = []
         self.running = True
     
+    # Showcase the drawn path
     def showcase(self, surface):
         self.roads = []
         for particle in self.path:
@@ -63,6 +80,7 @@ class BridgeCreator:
             road_connection.draw(surface)
 
 
+    # Run the interactive builder logic
     def run(self, events):
         mouse_pos = Vector2(pygame.mouse.get_pos())
         curr_particle_pos = screen_to_world(mouse_pos)
