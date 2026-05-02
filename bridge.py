@@ -42,19 +42,24 @@ class Bridge:
                 if connection.p2 not in new_particles:
                     new_particles.append(connection.p2)
 
-        self.connections = new_connections
-        self.particles = new_particles
-
         drops = []
         for p in self.particles:
             if getattr(p, 'is_road', False):
                 drop = p.original_pos.y - p.pos.y
-                drops.append((drop, p.original_index))
+                drops.append((drop, p))
         
         drops.sort(key=lambda x: x[0], reverse=True)
-        dropped_indices = [idx for drop, idx in drops[:3]]
+        dropped_particles = [p for drop, p in drops[:3] if drop > 0]
 
-        return has_broken, broken_connections, dropped_indices
+        dropped_connection_indices = []
+        for index, connection in enumerate(self.connections):
+            if connection.p1 in dropped_particles or connection.p2 in dropped_particles:
+                dropped_connection_indices.append(index)
+
+        self.connections = new_connections
+        self.particles = new_particles
+
+        return has_broken, broken_connections, dropped_connection_indices
            
 
     def draw(self, surface : pg.Surface):

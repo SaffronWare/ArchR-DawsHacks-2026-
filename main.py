@@ -35,35 +35,38 @@ def reinforce_bridge(indeces, above=False):
     for connection_index in indeces:
                 connection = result_bridge.connections[connection_index]
              
+                if connection.reinforced:
+                    continue
                 connection.reinforced = True
                 
                 
                 new_point_pos = connection.p1.pos + connection.p2.pos
                 new_point_pos /= 2
-         
-                new_point = Particle(new_point_pos+Vector2(0,-8 if not above else 8))
 
-                x_neighbours = list(sorted(result_bridge.particles, key=lambda x: abs(x.pos.x-new_point.pos.x)))[:10]
+                for _ in range(1):
+                    new_point = Particle(new_point_pos+Vector2(0,-8 if not _%2 == 0 else 8))
 
-                count = 0
-                for neighbor in x_neighbours:
-                     if abs(neighbor.pos.y - new_point.pos.y) < 0.5 and 10 > (neighbor.pos - new_point.pos).length() > 0.1:
-                          c = Connection(new_point, neighbor)
-                          c.reinforced = True
-                          result_bridge.connections.append(c)
-                          count += 1
-                          if count >= 2:
-                               break
-                          
+                    x_neighbours = list(sorted(result_bridge.particles, key=lambda x: abs(x.pos.x-new_point.pos.x)))[:10]
+
+                    count = 0
+                    for neighbor in x_neighbours:
+                        if abs(neighbor.pos.y - new_point.pos.y) < 0.5 and 10 > (neighbor.pos - new_point.pos).length() > 0.1:
+                            c = Connection(new_point, neighbor)
+                            c.reinforced = True
+                            result_bridge.connections.append(c)
+                            count += 1
+                            if count >= 2:
+                                break
+                            
 
 
-                result_bridge.particles.append(new_point)
-                    
-                connection_left = Connection(connection.p1, new_point)
-                connection_right = Connection(connection.p2, new_point)
-                connection_left.reinforced = True
-                connection_right.reinforced = True
-                result_bridge.connections += [connection_left, connection_right]
+                    result_bridge.particles.append(new_point)
+                        
+                    connection_left = Connection(connection.p1, new_point)
+                    connection_right = Connection(connection.p2, new_point)
+                    connection_left.reinforced = True
+                    connection_right.reinforced = True
+                    result_bridge.connections += [connection_left, connection_right]
 
                 
 
@@ -91,7 +94,7 @@ while running:
         has_broken, broken_connections, dropped_indices = bridge.update()
         if has_broken:
 
-            reinforce_bridge(broken_connections + dropped_indices, True)
+            reinforce_bridge(list(set(broken_connections + dropped_indices)), True)
            
             time_after = 0
             while time_after < 2:
