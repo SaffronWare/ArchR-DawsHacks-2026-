@@ -23,13 +23,15 @@ def draw_background(surface, bg_img):
     surface.blit(bg_img, (0, 0))
     # Keep your grid lines if you want them on top:
     spacing = 25
-    grid_color_red = 25 # set all rgb values to the same rgb value
-    grid_color_green = 25
-    grid_color_blue = 25
+    grid_color_red = 50 # set all rgb values to the same rgb value
+    grid_color_green = 50
+    grid_color_blue = 50
     for x in range(0, constants.window_width, spacing):
         pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (x, 0), (x, constants.window_height))
     for y in range(0, constants.window_height, spacing):
         pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (0, y), (constants.window_width, y))
+    
+    pg.draw.rect(surface, (0, 0, 0), surface.get_rect(), 50)
 
 
 
