@@ -9,39 +9,36 @@ class Bridge:
         self.particles = []
         self.connections = []
     def update(self):
+        new_particles = []
         for particle in self.particles:
+            if particle.anchored and particle not in new_particles:
+                new_particles.append(particle)
             particle.update()
+
         to_remove = []
-        for connection in self.connections:
-            update_connection= connection.update()
-            if update_connection[0]:
-                self.particles += update_connection[1:4]
-                for index, connection2 in enumerate(self.connections):
-                    if connection.p1 in [connection2.p1, connection2.p2]:
-                        to_remove.append(index)
-                    elif connection.p2 in [connection2.p1, connection2.p2]:
-                        to_remove.append(index)
-                try:
-                    self.particles.remove(connection.p1)
-                except:
-                    pass
-                try:
-                    self.particles.remove(connection.p2)
-                except:
-                    pass
-                try:
-                    to_remove.append(self.connections.index(connection))
-                except:
-                    pass
-                try:
-                    self.connections += update_connection[4:]
-                except:
-                    pass
-        for index in to_remove:
-            self.connections.pop(index)
-                
-        while None in self.connections:
-            self.connections.remove(None)
+        
+        new_connections = []
+
+        for connection in self.connections[:]:
+            update = connection.update()
+
+
+            if update[0]:
+                new_particles += update[1:4]
+                new_connections += update[4:]
+
+                #new_connections += update[4:]
+                pass
+            else:
+                new_connections.append(connection)
+                if connection.p1 not in new_particles:
+                    new_particles.append(connection.p1)
+                if connection.p2 not in new_particles:
+                    new_particles.append(connection.p2)
+
+        self.connections = new_connections
+        self.particles = new_particles
+           
 
     def draw(self, surface : pg.Surface):
         for particle in self.particles:

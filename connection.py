@@ -47,16 +47,19 @@ class Connection:
      
         diff = self.l0 - curr_length
         if not self.broken:
-            self.strain =  10 *diff / self.l0 * self.k
+            self.strain =  diff / self.l0 * self.k
         else:
             self.strain = 0
         if abs(self.strain) > MAX_STRAIN:
-            mid_point = Particle((self.p1.pos + self.p2.pos)/2)
-            c1 = Connection(self.p1, mid_point)
-            c2 = Connection(self.p2, mid_point)
-            c1.broken = True
-            c2.broken = True
-            return [True, deepcopy(self.p1), deepcopy(self.p2), mid_point,c1,c2]
+            pass
+            dangling1 = deepcopy(self.p1)
+            dangling2 = deepcopy(self.p2)
+            mid = Particle((self.p1.pos + self.p2.pos)/2)
+            con1 = Connection(dangling1, mid)
+            con2 = Connection(dangling2, mid)
+            con1.broken = True
+            con2.broken = True
+            return [True, dangling1, dangling2, mid, con1, con2]
         else:
             force = self.k * diff - self.damp * vel_toward_each_other
             

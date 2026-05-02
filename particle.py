@@ -17,9 +17,10 @@ class Particle:
             self.velocity +=  self.force_accumulator / self.mass * dt
             self.pos += self.velocity * dt
             self.force_accumulator = Vector2()
-            if self.pos.y <= self.radius - world_y_span:
-                self.pos.y = self.radius - world_y_span
-                self.anchored = True
+            if False:
+                if self.pos.y <= self.radius - world_y_span:
+                    self.pos.y = self.radius - world_y_span
+                    self.anchored = True
 
     def draw(self, surface: pg.Surface):
         # ok wait first imma draw the actual node
