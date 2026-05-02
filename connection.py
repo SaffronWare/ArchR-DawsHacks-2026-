@@ -33,4 +33,7 @@ class Connection:
         self.p2.velocity += force * norm * dt 
         self.p1.velocity -= force * norm * dt 
 
+    def draw(self, surface):
+        pg.draw.line(surface, (200,0,200), world_to_screen(self.p1),world_to_screen(self.p2))
+
         

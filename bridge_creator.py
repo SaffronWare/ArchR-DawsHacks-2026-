@@ -25,7 +25,18 @@ class BridgeCreator:
 
     def __init__(self):
         self.path = []
+        self.roads = []
         self.running = True
+    
+    def showcase(self, surface):
+        self.roads = []
+        for particle in self.path:
+            particle.draw(surface)
+        for p1,p2 in zip(self.particles[:-1], self.particles[1:]):
+            road_connection = Connection(p1,p2)
+            self.roads.append(road_connection)
+            road_connection.draw(surface)
+
 
     def run(self, events):
         mouse_pos = pygame.mouse.get_pos()

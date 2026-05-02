@@ -41,3 +41,5 @@ def screen_to_world(quantity):
 gravity = -9.8
 NODE_MASS = 100 # kilograms
 NODE_RADIUS=5
+START_NODE = (-90, 50)
+END_NODE = (90, 50)
