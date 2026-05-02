@@ -6,7 +6,7 @@ from particle import *
 from connection import *
 from bridge import *
 import random 
-
+import time
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -21,6 +21,7 @@ bg_img = pygame.transform.scale(bg_img, (constants.window_width, constants.windo
 
 creator = BridgeCreator()
 bridge = None
+result_bridge = None
 
 pygame.display.set_caption('ArchR')
 
@@ -51,10 +52,48 @@ while running:
     
     if creator.running:
         bridge = creator.run(events)
+        result_bridge = deepcopy(bridge)
         creator.showcase(surface)
     else:
         bridge.draw(surface)
-        bridge.update()
+        bridge_data = bridge.update()
+        if bridge_data[0]:
+
+            for connection_index in bridge_data[1:]:
+                connection = result_bridge.connections[connection_index]
+                new_point_pos = connection.p1.pos + connection.p2.pos
+                new_point_pos /= 2
+                new_point = Particle(new_point_pos+Vector2(0,-2))
+
+                result_bridge.particles.append(new_point)
+                
+                connection_left = Connection(connection.p1, new_point)
+                connection_right = Connection(connection.p2, new_point)
+                result_bridge.connections += [connection_left, connection_right]
+           
+            time_after = 0
+            while time_after < 2:
+                time_after += dt
+                draw_background(surface, bg_img)
+                bridge.update()
+                bridge.draw(surface)
+                clock.tick(constants.fps)
+                window.blit(surface, (0,0))
+                pygame.display.flip()
+                prevs.append(deepcopy(bridge))
+
+            for previous_bridge in prevs[::-1]:
+                draw_background(surface, bg_img)
+                previous_bridge.draw(surface)
+                clock.tick(constants.fps)
+                window.blit(surface, (0,0))
+                pygame.display.flip()
+                #time.sleep(1/constants.fps)
+            
+            bridge = deepcopy(result_bridge)
+            prevs = []
+        else:
+            prevs.append(deepcopy(bridge))
 
         
     

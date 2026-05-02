@@ -11,13 +11,13 @@ window_width = 1002
 aspect_ratio = 1.5
 window_height = int(window_width // aspect_ratio)
 fps = 200
-dt = 4/fps
+dt = 0.5/fps
 sim_speed = 2
 dt_sim = dt*sim_speed
 
 
 
-world_x_span = 100
+world_x_span = 25
 world_y_span = world_x_span / aspect_ratio
 world_width = 2 * world_x_span
 world_height = 2 * world_y_span
@@ -44,7 +44,7 @@ def screen_to_world(quantity):
 # FOR PHYSICS
 gravity = -9.8
 NODE_MASS = 100 # kilograms
-NODE_RADIUS=2
-START_NODE = (-90, 50)
-END_NODE = (90, 50)
-MAX_STRAIN = 1
+NODE_RADIUS=0.5
+START_NODE = (-20, 10)
+END_NODE = (20, 10)
+MAX_STRAIN = 100

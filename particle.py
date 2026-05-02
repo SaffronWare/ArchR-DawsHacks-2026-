@@ -10,6 +10,7 @@ class Particle:
         self.mass = NODE_MASS
         self.force_accumulator = Vector2()
         self.anchored = False # for now i might add more later
+        self.should_draw = True
 
     def update(self):
         if (not self.anchored):
@@ -24,10 +25,9 @@ class Particle:
 
     def draw(self, surface: pg.Surface):
         # ok wait first imma draw the actual node
-        draw_glow(surface, world_to_screen(self.pos), world_to_screen(self.radius), (255,255,255))
+        if self.should_draw:
+            draw_glow(surface, world_to_screen(self.pos), world_to_screen(self.radius), (255,255,255))
 
 
 
 
-        # future glow effect after polishing
-        # for now nothing

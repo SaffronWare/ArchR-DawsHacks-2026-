@@ -56,7 +56,7 @@ def draw_glow(screen, center, radius, color):
             surf,
             (*color, alpha),
             (cx, cy),
-            radius + i * 3
+            radius + i * 1
         )
 
     pg.draw.circle(surf, color, (cx, cy), radius)

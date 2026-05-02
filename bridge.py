@@ -11,6 +11,7 @@ class Bridge:
     def update(self):
         has_broken=False
         new_particles = []
+        broken_connections = []
         for particle in self.particles:
             if particle.anchored and particle not in new_particles:
                 new_particles.append(particle)
@@ -20,11 +21,13 @@ class Bridge:
         
         new_connections = []
 
-        for connection in self.connections[:]:
+        for index, connection in enumerate(self.connections[:]):
             update = connection.update()
+            
 
 
             if update[0]:
+                broken_connections.append(index)
                 has_broken =True
                 new_particles += update[1:4]
                 new_connections += update[4:]
@@ -40,7 +43,7 @@ class Bridge:
 
         self.connections = new_connections
         self.particles = new_particles
-        return [has_broken]
+        return [has_broken] + broken_connections
            
 
     def draw(self, surface : pg.Surface):
