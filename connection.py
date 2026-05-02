@@ -17,20 +17,11 @@ class Connection:
 
         norm = (self.p2.pos - self.p1.pos).normalize()
         vel_toward_each_other = (self.p2.velocity - self.p1.velocity).dot(norm)
-
+     
         diff = self.l0 - curr_length
-        force = self.k * diff 
+        force = self.k * diff + self.damp * vel_toward_each_other
 
         self.p2.velocity += force * norm * dt 
         self.p1.velocity -= force * norm * dt 
 
-        vel1 = self.p1.velocity.dot(norm) * norm 
-        self.p1.velocity -= vel1 
-
-        vel2 = self.p2.velocity.dot(norm) * norm 
-        self.p2.velocity -= vel2
-
-        vel1 *= exp(-self.damp * dt)
-        vel2 *= exp(-self.damp * dt)
-        self.p1.velocity += vel1
-        self.p2.velocity += vel2
+        
