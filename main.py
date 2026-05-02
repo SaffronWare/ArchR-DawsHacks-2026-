@@ -34,7 +34,7 @@ class FPS:
  
     def render(self, display):
         self.text = self.font.render(str(round(self.clock.get_fps(),2)), True, BLACK)
-        display.blit(self.text, (200, 150))
+        display.blit(self.text, (0, 0))
  
 fps = FPS()
 
