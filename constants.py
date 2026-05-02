@@ -47,4 +47,4 @@ NODE_MASS = 100 # kilograms
 NODE_RADIUS=2
 START_NODE = (-90, 50)
 END_NODE = (90, 50)
-
+MAX_STRAIN = 5

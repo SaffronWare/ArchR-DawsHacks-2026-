@@ -2,7 +2,25 @@ from constants import *
 import pygame as pg
 from pygame import Vector2
 from particle import *
-from math import exp
+from math import exp, tanh
+from copy import deepcopy
+
+
+def strain_to_color(strain, scale=0.001):
+
+
+    t = tanh(strain / scale)
+
+    gray = (160, 160, 160)
+    red = (255, 60, 60)
+    blue = (60, 120, 255)
+
+    if t < 0:
+        amount = -t
+        return tuple(int(gray[i] * (1 - amount) + red[i] * amount) for i in range(3))
+    else:
+        amount = t
+        return tuple(int(gray[i] * (1 - amount) + blue[i] * amount) for i in range(3))
 
 CONNECTION_TYPES = {
     "STEEL":0,
@@ -18,6 +36,7 @@ class Connection:
         self.l0 = (p2.pos - p1.pos).length()
         self.type = None
         self.strain = 0
+        self.broken = False
         
     
     def update(self):
@@ -27,14 +46,27 @@ class Connection:
         vel_toward_each_other = (self.p2.velocity - self.p1.velocity).dot(norm)
      
         diff = self.l0 - curr_length
-        self.strain = diff / self.l0
-        force = self.k * diff - self.damp * vel_toward_each_other
-        
-        self.p1.force_accumulator -= force * norm 
-        self.p2.force_accumulator += force * norm
+        if not self.broken:
+            self.strain =  10 *diff / self.l0 * self.k
+        else:
+            self.strain = 0
+        if abs(self.strain) > MAX_STRAIN:
+            mid_point = Particle((self.p1.pos + self.p2.pos)/2)
+            c1 = Connection(self.p1, mid_point)
+            c2 = Connection(self.p2, mid_point)
+            c1.broken = True
+            c2.broken = True
+            return [True, deepcopy(self.p1), deepcopy(self.p2), mid_point,c1,c2]
+        else:
+            force = self.k * diff - self.damp * vel_toward_each_other
+            
+            self.p1.force_accumulator -= force * norm 
+            self.p2.force_accumulator += force * norm
+            return [False]
 
 
     def draw(self, surface):
-        pg.draw.line(surface, (200,0,200), world_to_screen(self.p1.pos),world_to_screen(self.p2.pos))
+
+        pg.draw.line(surface, strain_to_color(self.strain), world_to_screen(self.p1.pos),world_to_screen(self.p2.pos))
 
         

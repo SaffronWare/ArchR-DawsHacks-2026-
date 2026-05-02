@@ -1,7 +1,7 @@
 from pygame import Vector2
 import pygame as pg
 from constants import *
-
+from draw_functions import *
 class Particle:
     def __init__(self, pos=Vector2()):
         self.pos = pos.copy()
@@ -17,11 +17,14 @@ class Particle:
             self.velocity +=  self.force_accumulator / self.mass * dt
             self.pos += self.velocity * dt
             self.force_accumulator = Vector2()
+            if self.pos.y <= self.radius - world_y_span:
+                self.pos.y = self.radius - world_y_span
+                self.anchored = True
 
     def draw(self, surface: pg.Surface):
         # ok wait first imma draw the actual node
-        print(f"radius : {self.radius}")
-        pg.draw.circle(surface, (255,255,255), world_to_screen(self.pos), world_to_screen(self.radius))
+        draw_glow(surface, world_to_screen(self.pos), world_to_screen(self.radius), (255,255,255))
+
 
 
 

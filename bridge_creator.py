@@ -18,6 +18,7 @@ class BridgeCreator:
             connections.append(curr_connection)
         
         generated_bridge = Bridge()
+        generated_bridge.road = deepcopy(path)
         generated_bridge.particles = particles
         generated_bridge.connections = connections
         
