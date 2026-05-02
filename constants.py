@@ -1,6 +1,10 @@
 from pygame import Vector2
 
+# I think for now the units ill use is just SI. So everything
+# physics related is in kg, m, m/s, s etc....
+
 # we define useful constants and globals over here
+# FOR PYGAME
 
 window_width = 800
 aspect_ratio = 2
@@ -10,7 +14,7 @@ dt = 1/fps
 sim_speed = 2
 dt_sim = dt*sim_speed
 
-gravity = 9.8
+
 
 world_x_span = 100
 world_y_span = world_x_span / aspect_ratio
@@ -32,3 +36,7 @@ def screen_to_world(quantity):
         return 2 * quantity / window_width * world_x_span - Vector2(world_x_span, world_y_span)
     elif isinstance(quantity, float):
         return 2 * quantity * world_x_span / window_width
+    
+# FOR PHYSICS
+gravity = -9.8
+NODE_MASS = 100 # kilograms
