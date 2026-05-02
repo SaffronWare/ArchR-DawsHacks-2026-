@@ -15,30 +15,23 @@ center = (window_width // 2, window_height // 2)
 radius = 30
 
 
-'''
-def draw_glow(screen, center, radius, color):
-    x, y = center
+def draw_background(surface, bg_img):
 
-    glow_surf = pg.Surface((radius * 6, radius * 6), pg.SRCALPHA)
-    # transparent surface so alpha blending works
+    surface.fill((20, 20, 20))
 
-    cx, cy = radius * 3, radius * 3  # center of glow surface
+    surface.blit(bg_img, (0, 0))
+    # Keep your grid lines if you want them on top:
+    spacing = 25
+    grid_color_red = 25 # set all rgb values to the same rgb value
+    grid_color_green = 25
+    grid_color_blue = 25
+    for x in range(0, constants.window_width, spacing):
+        pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (x, 0), (x, constants.window_height))
+    for y in range(0, constants.window_height, spacing):
+        pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (0, y), (constants.window_width, y))
 
-    # outer glow layers (big + transparent)
-    for i in range(12, 0, -1):
-        alpha = int(8 * i)  # outer = more transparent
-        pg.draw.circle(
-            glow_surf,
-            (*color, alpha),
-            (cx, cy),
-            radius + i * 4
-        )
 
-    # solid core
-    pg.draw.circle(glow_surf, color, (cx, cy), radius)
 
-    # blit onto main screen
-    screen.blit(glow_surf, (x - cx, y - cy))'''
 
 def draw_glow(screen, center, radius, color):
     x, y = center
