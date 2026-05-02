@@ -13,8 +13,6 @@ clock = pygame.time.Clock()
 
 window = pygame.display.set_mode((constants.window_width, constants.window_height))
 surface = pygame.Surface((constants.window_width, constants.window_height))
-
-
 # backgrounds = {1: "assets/mountain_landscape16_generated.jpg", 2: "assets/dark_background_dark_blue.jpg", 3: "assets/wallhaven-gwz7ol.png"}
 # bg_img = pygame.image.load(random.choice(list(backgrounds.values()))).convert()
 
@@ -23,6 +21,8 @@ bg_img = pygame.transform.scale(bg_img, (constants.window_width, constants.windo
 
 creator = BridgeCreator()
 bridge = None
+
+pygame.display.set_caption('ArchR')
 
 BLACK = (50, 50, 50)
 

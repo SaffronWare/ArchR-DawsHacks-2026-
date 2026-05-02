@@ -1,28 +1,30 @@
 import bpy
 
-# TEST DATA MADE MY AI
+points_2d = [(0, 70), (2, 1), (4, 70), (6, 2)]
+depth = 2
 
-# 8 corner vertices
-verts = [
-    (0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), # Bottom 4
-    (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)  # Top 4
-]
+verts = []
+for x, y in points_2d:
+    verts.append((x, y, 0)) # Bottom vertex
+    verts.append((x, y, depth)) # Top vertex
 
-# 6 faces (each defines one side of the cube)
-faces = [
-    (0, 1, 2, 3), # Bottom
-    (4, 5, 6, 7), # Top
-    (0, 1, 5, 4), # Front
-    (1, 2, 6, 5), # Right
-    (2, 3, 7, 6), # Back
-    (3, 0, 4, 7)  # Left
-]
+faces = []
+for i in range(len(points_2d) - 1):
+# the math here is ai
+    b1 = i * 2
+    t1 = i * 2 + 1
+    b2 = (i + 1) * 2
+    t2 = (i + 1) * 2 + 1
+    
+    faces.append((b1, b2, t2, t1))
 
+# create the object and export it, courtesy of stack overflow
 
-mesh = bpy.data.meshes.new("MyMesh")
-obj = bpy.data.objects.new("MyObj", mesh)
+mesh = bpy.data.meshes.new("BridgeMesh")
+obj = bpy.data.objects.new("Bridge", mesh)
 bpy.context.collection.objects.link(obj)
-mesh.from_pydata(verts, [], faces)
 
-# Save to file
-bpy.ops.wm.save_as_mainfile(filepath="output.blend")
+mesh.from_pydata(verts, [], faces)
+mesh.update()
+
+bpy.ops.wm.save_as_mainfile(filepath="bridge.blend")
