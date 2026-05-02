@@ -38,6 +38,7 @@ class Connection:
         self.type = None
         self.strain = 0
         self.broken = False
+        self.reinforced = False
         
     
     def update(self):

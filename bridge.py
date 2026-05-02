@@ -27,8 +27,9 @@ class Bridge:
 
 
             if update[0]:
-                broken_connections.append(index)
-                has_broken =True
+                if connection.reinforced == False:
+                    broken_connections.append(index)
+                    has_broken =True
                 new_particles += update[1:4]
                 new_connections += update[4:]
 
