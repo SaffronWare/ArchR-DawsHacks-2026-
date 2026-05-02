@@ -3,9 +3,9 @@ import pygame as pg
 from constants import *
 
 class Particle:
-    def __init__(self, pos=Vector2(), radius=0):
+    def __init__(self, pos=Vector2()):
         self.pos = pos.copy()
-        self.radius = radius
+        self.radius = NODE_RADIUS
         self.velocity = Vector2()
         self.mass = NODE_MASS
         self.force_accumulator = Vector2()

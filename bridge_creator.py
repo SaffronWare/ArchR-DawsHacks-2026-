@@ -22,6 +22,19 @@ class BridgeCreator:
         generated_bridge.connections = connections
         
         return generated_bridge
-        
-    
+
+    def __init__(self):
+        self.path = []
+        self.running = True
+
+    def run(self, events):
+        mouse_pos = pygame.mouse.get_pos()
+        curr_particle_pos = screen_to_world(mouse_pos)
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    part = Particle(curr_particle_pos)
+                    self.path.append(part)
+                    
+
 

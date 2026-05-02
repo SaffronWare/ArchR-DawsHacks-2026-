@@ -17,6 +17,8 @@ class Connection:
         self.damp = 100
         self.l0 = (p2.pos - p1.pos).length()
         self.type = None
+        self.strain = 0
+        
     
     def update(self):
         curr_length = (self.p2.pos - self.p1.pos).length()
@@ -25,6 +27,7 @@ class Connection:
         vel_toward_each_other = (self.p2.velocity - self.p1.velocity).dot(norm)
      
         diff = self.l0 - curr_length
+        self.strain = diff / self.l0
         force = self.k * diff + self.damp * vel_toward_each_other
 
         self.p2.velocity += force * norm * dt 
