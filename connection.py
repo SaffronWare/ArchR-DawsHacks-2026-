@@ -4,6 +4,7 @@ from pygame import Vector2
 from particle import *
 from math import exp, tanh
 from copy import deepcopy
+from draw_functions import draw_rod
 
 
 def strain_to_color(strain, scale=0.001):
@@ -40,36 +41,43 @@ class Connection:
         
     
     def update(self):
-        curr_length = (self.p2.pos - self.p1.pos).length()
+        try:
+            curr_length = (self.p2.pos - self.p1.pos).length()
 
-        norm = (self.p2.pos - self.p1.pos).normalize()
-        vel_toward_each_other = (self.p2.velocity - self.p1.velocity).dot(norm)
-     
-        diff = self.l0 - curr_length
-        if not self.broken:
-            self.strain =  diff / self.l0 * self.k
-        else:
-            self.strain = 0
-        if abs(self.strain) > MAX_STRAIN:
-            pass
-            dangling1 = deepcopy(self.p1)
-            dangling2 = deepcopy(self.p2)
-            mid = Particle((self.p1.pos + self.p2.pos)/2)
-            con1 = Connection(dangling1, mid)
-            con2 = Connection(dangling2, mid)
-            con1.broken = True
-            con2.broken = True
-            return [True, dangling1, dangling2, mid, con1, con2]
-        else:
-            force = self.k * diff - self.damp * vel_toward_each_other
-            
-            self.p1.force_accumulator -= force * norm 
-            self.p2.force_accumulator += force * norm
+            norm = (self.p2.pos - self.p1.pos).normalize()
+            vel_toward_each_other = (self.p2.velocity - self.p1.velocity).dot(norm)
+        
+            diff = self.l0 - curr_length
+            if not self.broken:
+                self.strain =  diff / self.l0 * self.k
+            else:
+                self.strain = 0
+            if abs(self.strain) > MAX_STRAIN:
+                pass
+                dangling1 = deepcopy(self.p1)
+                dangling1.should_draw = False
+                dangling2 = deepcopy(self.p2)
+                dangling2.should_draw = False
+                mid = Particle((self.p1.pos + self.p2.pos)/2)
+                mid.should_draw = False
+                con1 = Connection(dangling1, mid)
+                con2 = Connection(dangling2, mid)
+                con1.broken = True
+                con2.broken = True
+                return [True, dangling1, dangling2, mid, con1, con2]
+            else:
+                force = self.k * diff - self.damp * vel_toward_each_other
+                
+                self.p1.force_accumulator -= force * norm 
+                self.p2.force_accumulator += force * norm
+                return [False]
+        except Exception as e:
+            print(e)
             return [False]
 
 
     def draw(self, surface):
 
-        pg.draw.line(surface, strain_to_color(self.strain), world_to_screen(self.p1.pos),world_to_screen(self.p2.pos))
+        draw_rod(surface, world_to_screen(self.p1.pos), world_to_screen(self.p2.pos), strain_to_color(self.strain))
 
         

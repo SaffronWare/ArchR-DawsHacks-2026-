@@ -9,13 +9,34 @@ class BridgeCreator:
     @staticmethod
     def generate_generic( path):
     
-        
-        # for now generic algorithm
+    
         particles = deepcopy(path)
+        left_support = deepcopy(particles[0])
+        left_support.pos.y -= 3
+        
+        right_support = deepcopy(particles[-1])
+        right_support.pos.y -= 3
+
+    
+        
         connections = []
         for p1,p2 in zip(particles[:-1], particles[1:]):
+            print("creatig connection")
             curr_connection = Connection(p1,p2)
             connections.append(curr_connection)
+        
+        
+
+        connections.append(Connection(left_support, particles[1]))
+        connections.append(Connection(right_support, particles[-2]))
+
+        particles.append(left_support)
+        particles.append(right_support)
+        
+        for i, p in enumerate(particles):
+            p.original_index = i
+            if i < len(path):
+                p.is_road = True
         
         generated_bridge = Bridge()
         generated_bridge.road = deepcopy(path)
@@ -24,12 +45,6 @@ class BridgeCreator:
         
         return generated_bridge
 
-
-    @staticmethod
-    def generate_bridge(path):
-        bridge = Bridge()
-        bridge.road = deepcopy(path)
-        
 
     def __init__(self):
         self.path = [Particle(Vector2(START_NODE)), Particle(Vector2(END_NODE))]
@@ -66,6 +81,7 @@ class BridgeCreator:
                 if event.key == pygame.K_RETURN:
                     self.running = False 
                     bridge = BridgeCreator.generate_generic(self.path)
+                    print(len(bridge.connections))
                     return bridge
         return None
                     

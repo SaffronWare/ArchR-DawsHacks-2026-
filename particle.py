@@ -5,6 +5,9 @@ from draw_functions import *
 class Particle:
     def __init__(self, pos=Vector2()):
         self.pos = pos.copy()
+        self.original_pos = pos.copy()
+        self.original_index = -1
+        self.is_road = False
         self.radius = NODE_RADIUS
         self.velocity = Vector2()
         self.mass = NODE_MASS

@@ -13,12 +13,6 @@ clock = pygame.time.Clock()
 
 window = pygame.display.set_mode((constants.window_width, constants.window_height))
 surface = pygame.Surface((constants.window_width, constants.window_height))
-# backgrounds = {1: "assets/mountain_landscape16_generated.jpg", 2: "assets/dark_background_dark_blue.jpg", 3: "assets/wallhaven-gwz7ol.png"}
-# bg_img = pygame.image.load(random.choice(list(backgrounds.values()))).convert()
-
-bg_img = pygame.image.load("assets/wallhaven-gwz7ol.png").convert()
-bg_img = pygame.transform.scale(bg_img, (constants.window_width, constants.window_height))
-
 creator = BridgeCreator()
 bridge = None
 result_bridge = None
@@ -30,19 +24,45 @@ BLACK = (50, 50, 50)
 class FPS:
     def __init__(self):
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont("Verdana", 20)
-        self.text = self.font.render(str(self.clock.get_fps()), True, BLACK)
+        self.font = pygame.font.SysFont("Verdana", 20, bold=True)
+        self.color = (200, 220, 240)
  
     def render(self, display):
-        self.text = self.font.render(str(round(self.clock.get_fps(),2)), True, BLACK)
-        display.blit(self.text, (0, 0))
+        self.text = self.font.render(f"FPS: {round(self.clock.get_fps())}", True, self.color)
+        display.blit(self.text, (20, 20))
+
+def reinforce_bridge(indeces, above=False):
+    for connection_index in indeces:
+                connection = result_bridge.connections[connection_index]
+                
+                new_point_pos = connection.p1.pos + connection.p2.pos
+                new_point_pos /= 2
+         
+                new_point = Particle(new_point_pos+Vector2(0,-8 if not above else 8))
+
+                x_neighbours = list(sorted(result_bridge.particles, key=lambda x: abs(x.pos.x-new_point.pos.x)))[:10]
+
+                for neighbor in x_neighbours:
+                     if abs(neighbor.pos.y - new_point.pos.y) < 0.5 and (neighbor.pos - new_point.pos).length() > 0.1:
+                          result_bridge.connections.append(Connection(new_point, neighbor))
+                          break
+
+
+                result_bridge.particles.append(new_point)
+                    
+                connection_left = Connection(connection.p1, new_point)
+                connection_right = Connection(connection.p2, new_point)
+                result_bridge.connections += [connection_left, connection_right]
+
+                
+
  
 fps = FPS()
 prevs = []
 running = True
 while running:
 
-    draw_background(surface, bg_img)
+    draw_background(surface)
 
     # quit the programe
     events = pygame.event.get()
@@ -54,27 +74,18 @@ while running:
         bridge = creator.run(events)
         result_bridge = deepcopy(bridge)
         creator.showcase(surface)
+ 
     else:
         bridge.draw(surface)
-        bridge_data = bridge.update()
-        if bridge_data[0]:
+        has_broken, broken_connections, dropped_indices = bridge.update()
+        if has_broken:
 
-            for connection_index in bridge_data[1:]:
-                connection = result_bridge.connections[connection_index]
-                new_point_pos = connection.p1.pos + connection.p2.pos
-                new_point_pos /= 2
-                new_point = Particle(new_point_pos+Vector2(0,-2))
-
-                result_bridge.particles.append(new_point)
-                
-                connection_left = Connection(connection.p1, new_point)
-                connection_right = Connection(connection.p2, new_point)
-                result_bridge.connections += [connection_left, connection_right]
+            reinforce_bridge(broken_connections + dropped_indices, True)
            
             time_after = 0
             while time_after < 2:
                 time_after += dt
-                draw_background(surface, bg_img)
+                draw_background(surface)
                 bridge.update()
                 bridge.draw(surface)
                 clock.tick(constants.fps)
@@ -83,7 +94,7 @@ while running:
                 prevs.append(deepcopy(bridge))
 
             for previous_bridge in prevs[::-1]:
-                draw_background(surface, bg_img)
+                draw_background(surface)
                 previous_bridge.draw(surface)
                 clock.tick(constants.fps)
                 window.blit(surface, (0,0))

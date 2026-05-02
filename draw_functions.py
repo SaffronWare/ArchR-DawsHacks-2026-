@@ -16,22 +16,18 @@ center = (window_width // 2, window_height // 2)
 radius = 30
 
 
-def draw_background(surface, bg_img):
+def draw_background(surface):
 
-    surface.fill((20, 20, 20))
+    surface.fill((15, 20, 25))
 
-    surface.blit(bg_img, (0, 0))
-    # Keep your grid lines if you want them on top:
-    spacing = 25
-    grid_color_red = 50 # set all rgb values to the same rgb value
-    grid_color_green = 50
-    grid_color_blue = 50
+    spacing = 30
+    grid_color = (30, 35, 40)
     for x in range(0, constants.window_width, spacing):
-        pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (x, 0), (x, constants.window_height))
+        pg.draw.line(surface, grid_color, (x, 0), (x, constants.window_height))
     for y in range(0, constants.window_height, spacing):
-        pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (0, y), (constants.window_width, y))
+        pg.draw.line(surface, grid_color, (0, y), (constants.window_width, y))
     
-    pg.draw.rect(surface, (0, 0, 0), surface.get_rect(), 50)
+    pg.draw.rect(surface, (10, 15, 20), surface.get_rect(), 15)
 
 
 
@@ -62,6 +58,29 @@ def draw_glow(screen, center, radius, color):
     pg.draw.circle(surf, color, (cx, cy), radius)
 
     screen.blit(surf, (x - cx, y - cy))
+
+def draw_rod(surface, start_pos, end_pos, color, width=6):
+    """Draw a polished rod with an outline and rounded caps."""
+    x1, y1 = start_pos
+    x2, y2 = end_pos
+    
+    # Outline
+    outline_color = (25, 25, 25)
+    outline_width = width + 2
+    outline_radius = outline_width // 2
+    pg.draw.line(surface, outline_color, start_pos, end_pos, outline_width)
+    pg.draw.circle(surface, outline_color, (int(x1), int(y1)), outline_radius)
+    pg.draw.circle(surface, outline_color, (int(x2), int(y2)), outline_radius)
+    
+    # Main color
+    radius = width // 2
+    pg.draw.line(surface, color, start_pos, end_pos, width)
+    pg.draw.circle(surface, color, (int(x1), int(y1)), radius)
+    pg.draw.circle(surface, color, (int(x2), int(y2)), radius)
+    
+    # Highlight to give it a 3D sheen
+    highlight_color = (min(255, color[0] + 70), min(255, color[1] + 70), min(255, color[2] + 70))
+    pg.draw.line(surface, highlight_color, start_pos, end_pos, max(1, width // 3))
 
 if __name__ == '__main__':
     running=True

@@ -10,8 +10,8 @@ from pygame import Vector2
 window_width = 1002
 aspect_ratio = 1.5
 window_height = int(window_width // aspect_ratio)
-fps = 200
-dt = 0.5/fps
+fps = 400
+dt = 2/fps
 sim_speed = 2
 dt_sim = dt*sim_speed
 
@@ -47,4 +47,4 @@ NODE_MASS = 100 # kilograms
 NODE_RADIUS=0.5
 START_NODE = (-20, 10)
 END_NODE = (20, 10)
-MAX_STRAIN = 100
+MAX_STRAIN = 1000

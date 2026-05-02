@@ -43,7 +43,17 @@ class Bridge:
 
         self.connections = new_connections
         self.particles = new_particles
-        return [has_broken] + broken_connections
+
+        drops = []
+        for p in self.particles:
+            if getattr(p, 'is_road', False):
+                drop = p.original_pos.y - p.pos.y
+                drops.append((drop, p.original_index))
+        
+        drops.sort(key=lambda x: x[0], reverse=True)
+        dropped_indices = [idx for drop, idx in drops[:3]]
+
+        return has_broken, broken_connections, dropped_indices
            
 
     def draw(self, surface : pg.Surface):
