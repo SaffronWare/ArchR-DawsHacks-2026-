@@ -4,6 +4,11 @@ from pygame import Vector2
 from particle import *
 from math import exp
 
+CONNECTION_TYPES = {
+    "STEEL":0,
+    "ROAD":1
+}
+
 class Connection:
     def __init__(self, p1 : Particle, p2 : Particle):
         self.p1 = p1 
@@ -11,6 +16,7 @@ class Connection:
         self.k = 1000
         self.damp = 100
         self.l0 = (p2.pos - p1.pos).length()
+        self.type = None
     
     def update(self):
         curr_length = (self.p2.pos - self.p1.pos).length()

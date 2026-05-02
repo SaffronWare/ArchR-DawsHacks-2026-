@@ -9,7 +9,7 @@ class Particle:
         self.velocity = Vector2()
         self.mass = NODE_MASS
         self.force_accumulator = Vector2()
-        self.type = None # for now i might add more later
+        self.anchored = False # for now i might add more later
 
     def update(self):
         self.velocity.y += gravity * dt
