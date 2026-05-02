@@ -8,7 +8,7 @@ from pygame import Vector2
 
 window_width = 800
 aspect_ratio = 2
-window_height = window_width / aspect_ratio
+window_height = window_width // aspect_ratio
 fps = 60
 dt = 1/fps
 sim_speed = 2
