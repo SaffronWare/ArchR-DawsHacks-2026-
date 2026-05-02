@@ -30,6 +30,8 @@ def draw_background(surface, bg_img):
         pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (x, 0), (x, constants.window_height))
     for y in range(0, constants.window_height, spacing):
         pg.draw.line(surface, (grid_color_red, grid_color_green, grid_color_blue), (0, y), (constants.window_width, y))
+    
+    pg.draw.rect(surface, (0, 0, 0), surface.get_rect(), 50)
 
 
 

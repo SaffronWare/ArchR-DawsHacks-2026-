@@ -15,14 +15,28 @@ window = pygame.display.set_mode((constants.window_width, constants.window_heigh
 surface = pygame.Surface((constants.window_width, constants.window_height))
 
 
-backgrounds = {1: "assets/mountain_landscape16_generated.jpg", 2: "assets/dark_background_dark_blue.jpg", 3: "assets/wallhaven-gwz7ol.png"}
-
+# backgrounds = {1: "assets/mountain_landscape16_generated.jpg", 2: "assets/dark_background_dark_blue.jpg", 3: "assets/wallhaven-gwz7ol.png"}
 # bg_img = pygame.image.load(random.choice(list(backgrounds.values()))).convert()
+
 bg_img = pygame.image.load("assets/wallhaven-gwz7ol.png").convert()
 bg_img = pygame.transform.scale(bg_img, (constants.window_width, constants.window_height))
 
 creator = BridgeCreator()
 bridge = None
+
+BLACK = (50, 50, 50)
+
+class FPS:
+    def __init__(self):
+        self.clock = pygame.time.Clock()
+        self.font = pygame.font.SysFont("Verdana", 20)
+        self.text = self.font.render(str(self.clock.get_fps()), True, BLACK)
+ 
+    def render(self, display):
+        self.text = self.font.render(str(round(self.clock.get_fps(),2)), True, BLACK)
+        display.blit(self.text, (200, 150))
+ 
+fps = FPS()
 
 running = True
 while running:
@@ -42,8 +56,12 @@ while running:
         bridge.draw(surface)
         bridge.update()
     
+    # clock.tick()
+    # print(clock.get_fps())
 
-    
+    fps.render(surface)
+    pygame.display.update()
+    fps.clock.tick(0)
 
     # draw to objects
     window.blit(surface, (0,0))
