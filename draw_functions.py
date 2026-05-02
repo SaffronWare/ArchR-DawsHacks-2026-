@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import constants
 
 pg.init()
 

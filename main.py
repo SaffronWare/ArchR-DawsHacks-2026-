@@ -17,20 +17,27 @@ bg_img = pygame.image.load("assets/gray_city_background.png").convert()
 
 
 creator = BridgeCreator()
-
+bridge = None
 
 running = True
 while running:
 
     draw_background(surface, bg_img)
 
-    # quit the program
-    for event in pygame.event.get():
+    # quit the programe
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             running = False 
-    creator.run(pygame.event.get())
-    creator.showcase(surface)
     
+    if creator.running:
+        bridge = creator.run(events)
+        creator.showcase(surface)
+    else:
+        bridge.draw(surface)
+        bridge.update()
+    
+
     
 
     # draw to objects

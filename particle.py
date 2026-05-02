@@ -12,12 +12,15 @@ class Particle:
         self.anchored = False # for now i might add more later
 
     def update(self):
-        self.velocity.y += gravity * dt
-        self.pos += self.velocity * dt
-        self.force_accumulator = Vector2()
+        if (not self.anchored):
+            self.velocity.y += gravity * dt 
+            self.velocity +=  self.force_accumulator / self.mass * dt
+            self.pos += self.velocity * dt
+            self.force_accumulator = Vector2()
 
     def draw(self, surface: pg.Surface):
         # ok wait first imma draw the actual node
+        print(f"radius : {self.radius}")
         pg.draw.circle(surface, (255,255,255), world_to_screen(self.pos), world_to_screen(self.radius))
 
 

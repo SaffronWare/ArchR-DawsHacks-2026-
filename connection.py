@@ -13,8 +13,8 @@ class Connection:
     def __init__(self, p1 : Particle, p2 : Particle):
         self.p1 = p1 
         self.p2 = p2
-        self.k = 1000
-        self.damp = 100
+        self.k = 10000
+        self.damp = 2500
         self.l0 = (p2.pos - p1.pos).length()
         self.type = None
         self.strain = 0
@@ -28,12 +28,13 @@ class Connection:
      
         diff = self.l0 - curr_length
         self.strain = diff / self.l0
-        force = self.k * diff + self.damp * vel_toward_each_other
+        force = self.k * diff - self.damp * vel_toward_each_other
+        
+        self.p1.force_accumulator -= force * norm 
+        self.p2.force_accumulator += force * norm
 
-        self.p2.velocity += force * norm * dt 
-        self.p1.velocity -= force * norm * dt 
 
     def draw(self, surface):
-        pg.draw.line(surface, (200,0,200), world_to_screen(self.p1),world_to_screen(self.p2))
+        pg.draw.line(surface, (200,0,200), world_to_screen(self.p1.pos),world_to_screen(self.p2.pos))
 
         
