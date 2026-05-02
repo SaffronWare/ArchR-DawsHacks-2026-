@@ -60,16 +60,17 @@ def draw_glow(screen, center, radius, color):
 
     screen.blit(surf, (x - cx, y - cy))
 
-running=True
-while running:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running=False
+if __name__ == '__main__':
+    running=True
+    while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running=False
 
-    screen.fill(bg)
-    draw_glow(screen, center, radius, (255, 255, 255))
-    pg.display.flip()
-    clock.tick(60)
+        screen.fill(bg)
+        draw_glow(screen, center, radius, (255, 255, 255))
+        pg.display.flip()
+        clock.tick(60)
 
-pg.quit()
-sys.exit()
+    pg.quit()
+    sys.exit()

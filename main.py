@@ -30,7 +30,7 @@ while running:
             running = False 
     creator.run(pygame.event.get())
     creator.showcase(surface)
-    print(creator)
+    
     
 
     # draw to objects
