@@ -24,6 +24,13 @@ class BridgeCreator:
         
         return generated_bridge
 
+
+    @staticmethod
+    def generate_bridge(path):
+        bridge = Bridge()
+        bridge.road = deepcopy(path)
+        
+
     def __init__(self):
         self.path = [Particle(Vector2(START_NODE)), Particle(Vector2(END_NODE))]
         self.path[0].anchored = True

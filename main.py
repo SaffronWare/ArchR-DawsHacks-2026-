@@ -37,7 +37,7 @@ class FPS:
         display.blit(self.text, (0, 0))
  
 fps = FPS()
-
+prevs = []
 running = True
 while running:
 
@@ -55,6 +55,8 @@ while running:
     else:
         bridge.draw(surface)
         bridge.update()
+
+        
     
     # clock.tick()
     # print(clock.get_fps())
@@ -68,3 +70,4 @@ while running:
 
     # continuously redraw the screen
     pygame.display.flip()
+    clock.tick(constants.fps)

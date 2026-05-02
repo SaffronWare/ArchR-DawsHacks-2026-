@@ -10,8 +10,8 @@ from pygame import Vector2
 window_width = 1002
 aspect_ratio = 1.5
 window_height = int(window_width // aspect_ratio)
-fps = 60
-dt = 1/fps
+fps = 200
+dt = 4/fps
 sim_speed = 2
 dt_sim = dt*sim_speed
 
@@ -35,9 +35,9 @@ def screen_to_world(quantity):
         quantity = quantity.copy()
         #quantity.y = -quantity.y
         quantity.y = window_height - quantity.y
-        lol = 2 * quantity / window_width * world_x_span - Vector2(world_x_span, world_y_span)
-        return lol
-        return lol
+        flipped = 2 * quantity / window_width * world_x_span - Vector2(world_x_span, world_y_span)
+        return flipped
+
     elif isinstance(quantity, float) or isinstance(quantity, int):
         return 2 * quantity * world_x_span / window_width
     
