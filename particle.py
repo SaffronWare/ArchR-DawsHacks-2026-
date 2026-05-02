@@ -11,7 +11,7 @@ class Particle:
         self.force_accumulator = Vector2()
         self.type = None # for now i might add more later
 
-    def update(self,dt):
+    def update(self):
         self.velocity.y += gravity * dt
         self.pos += self.velocity * dt
         self.force_accumulator = Vector2()
