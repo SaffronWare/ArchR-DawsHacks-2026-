@@ -1,4 +1,6 @@
-![](vid_dem.mp4)
+<video width="320" height="240" controls>
+  <source src="vid_dem.mp4" type="video/mp4">
+</video>
 # DawsHacks 2026 Bridge Simulator
 
 A from-scratch 2D bridge physics simulator and automated visual bridge builder built in Python with Pygame for DawsHacks 2026.
