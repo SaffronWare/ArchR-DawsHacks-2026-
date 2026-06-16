@@ -1,3 +1,4 @@
+![](demo.mp4)
 # DawsHacks 2026 Bridge Simulator
 
 A from-scratch 2D bridge physics simulator and automated visual bridge builder built in Python with Pygame for DawsHacks 2026.
