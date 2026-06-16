@@ -1,6 +1,5 @@
-<video width="320" height="240" controls>
-  <source src="vid_dem.mp4" type="video/mp4">
-</video>
+
+https://github.com/user-attachments/assets/3b810a04-9a77-426f-aad7-688fb23b5687
 # DawsHacks 2026 Bridge Simulator
 
 A from-scratch 2D bridge physics simulator and automated visual bridge builder built in Python with Pygame for DawsHacks 2026.
